@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  labels: 
+    app: fw-proxy
+  name: fw-proxy-deployment
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      app: fw-proxy
+  template: 
+    metadata: 
+      labels: 
+        app: fw-proxy
+    spec: 
+      containers: 
+        - env: 
+            - name: SERVERIP
+              value: "DESTINATION_IP"
+            - name: SERVERPORT
+              value: "DESTINATION_PORT"
+          image: "gcr.io/PROJECT_ID/fw-proxy:0.0.1"
+          name: fw-proxy
+          ports: 
+            - containerPort: DESTINATION_PORT
+          securityContext: 
+            capabilities: 
+              add: 
+                - NET_ADMIN
+
